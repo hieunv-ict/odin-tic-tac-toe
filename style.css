@@ -6,7 +6,6 @@ body{
 }
 .board{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     width: 30rem;
     height: 30rem;
@@ -14,11 +13,16 @@ body{
     border-radius: 20px;
     padding: 10px;
 }
+.board-row{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
 
-.cell:nth-child(3n){
+.board-row > .cell:last-child{
     border-right: none;
 }
-.cell:nth-child(n+7){
+
+.board-row:last-child > .cell{
     border-bottom: none;
 }
 
