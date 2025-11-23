@@ -9,13 +9,13 @@
 </head>
 <body>
     <h1>Tic-Tac-Toe</h1>
-    <h1 class="turn">Player 1's turn</h1>
+    <h1 class="turn"> Player 1's turn</h1>
     <div class="content">
-        <h1>Player 1 : X</h1>
+        <h1><span id="player1-display">Player 1</span> : X</h1>
          <div class="board">
             
         </div>
-        <h1>Player 2 : O</h1>
+        <h1><span id="player2-display">Player 2</span> : O</h1>
     </div>
     <dialog closedby="any">
         <div class="result-dialog">
@@ -23,6 +23,20 @@
             <button>Restart</button>
         </div>
         
+    </dialog>
+
+    <dialog class="player-name-dialog">
+        <form method="dialog" class="name-form">
+            <p>
+                <label for="player1">Player 1's name:</label>
+                <input type="text" id="player1" name="player1-name" required>
+            </p>
+            <p>
+                <label for="player2">Player 2's name:</label>
+                <input type="text" id="player2" name="player2-name" required>
+            </p>
+            <button type="submit">Submit</button>
+        </form>
     </dialog>
 </body>
 </html>

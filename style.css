@@ -63,7 +63,7 @@ dialog{
     background-color:cornflowerblue;
     border-radius: 10px;
     width: 20vw;
-    height: 20vh;
+    height: 30vh;
 }
 
 .result-dialog{
@@ -74,11 +74,27 @@ dialog{
     align-items: stretch;
 }
 
+.name-form{
+    display: grid;
+    grid-template-rows: 2fr 2fr 1fr;
+    justify-content: space-between;
+    align-items: stretch;
+}
+.name-form > *{
+    align-self: center;
+}
+input[type="text"]{
+    border-radius: 5px;
+    outline: none;
+    width: 80%;
+    height: 3vh;
+}
+
 .result-dialog > *{
     align-self: center;
 }
 
-.result-dialog > button {
+button {
     height: 5vh;
     border-radius: 10px;
     background-color:antiquewhite;
