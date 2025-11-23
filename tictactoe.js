@@ -12,23 +12,38 @@ let gameBoard = (function (doc) {
 
         board = Array.from(Array(3), () => new Array(3));
         for (let i = 0; i < size; i++){
+            // get row element in board to add cell element
             let row = doc.createElement("div");
             row.classList.add("board-row");
+            // create cell and add click listener to each cell
             for (let j = 0; j < size; j++){
                 let cell = doc.createElement("div");
                 cell.classList.add("cell");
                 cell.addEventListener("click", e => {
                     if (board[i][j] === undefined && !gameLogic.isGameEnd()){
-
-                        let val = gameLogic.move();
-                        cell.textContent = val;
-                        board[i][j] = val;
-                        if (gameLogic.checkVictory(board)){
-                            gameLogic.endTheGame(val);
+                        // make a move
+                        let player = gameLogic.currentPlayer();
+                        // get player symbol to display
+                        cell.textContent = player.symbol;
+                        board[i][j] = player.symbol;
+                        // display current turn
+                        let banner = doc.querySelector(".turn");
+                        banner.textContent = gameLogic.nextPlayer().name + "'s turn";
+                        // check if the game ends
+                        let hasWinner = gameLogic.checkVictory(board);
+                        if (hasWinner){
+                            gameLogic.endTheGame(player.symbol);
                             let winner = gameLogic.getWinner();
                             resultDialog.showModal();
                             let winnerText = doc.querySelector(".game-result");
-                            winnerText.textContent = winner.name;
+                            winnerText.textContent = "Winner is " + winner.name;
+                            banner.textContent = "Winner is " + winner.name
+                        }
+                        else if (hasWinner === undefined){
+                            resultDialog.showModal();
+                            let winnerText = doc.querySelector(".game-result");
+                            winnerText.textContent = "The game is draw";
+                            banner.textContent = "The game is draw"
                         }
                     }
                 })
@@ -51,16 +66,24 @@ let gameLogic = (function () {
     let winner = undefined;
     let turn = 0;
     let endGame = false;
-    let move = function(){
+    let currentPlayer = function(){
         turn++;
         if (turn%2===0){
-            return player2.symbol;
+            return player2;
         }
         else {
-            return player1.symbol;
+            return player1;
         }
     }
-
+    let nextPlayer = function(){
+        if (turn%2===0){
+            return player1;
+        }
+        else {
+            return player2;
+        }
+    }
+    
     let getWinner = function(){
         return winner;
     }
@@ -70,7 +93,6 @@ let gameLogic = (function () {
     }
 
     let endTheGame = function (symbol){
-        console.log("end game");
         endGame = true;
         if (symbol == player1.symbol){
             winner = player1;
@@ -110,7 +132,6 @@ let gameLogic = (function () {
         for (let i = 1; i < size-1; i++){
             for (let j = 1; j < size-1; j++){
                 let symbol = board[i][j];
-                console.log(symbol);
                 if (symbol !== undefined){
                     if (symbol === board[i-1][j-1] && symbol === board[i+1][j+1]){
                         return true;
@@ -121,9 +142,21 @@ let gameLogic = (function () {
                 }
             }
         }
+        //check if all cell is filled but no one wins -> draw -> return undefined;
+
+        for (let i = 0; i < size; i++){
+            for (let j = 0; j < size; j++){
+                if (board[i][j] === undefined){
+                    return false;
+                }
+                else if (i === size-1 && j === size-1){
+                    return undefined;
+                }
+            }
+        }
         return false;
     }
-    return {isGameEnd, move, checkVictory, getWinner, endTheGame};
+    return {isGameEnd, currentPlayer, nextPlayer, checkVictory, getWinner, endTheGame};
 })();
 
 function createPlayer(playerName, symbol){
